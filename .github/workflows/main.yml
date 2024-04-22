@@ -19,13 +19,15 @@ jobs:
   tests-job:
     name: Tests Job
     runs-on: ubuntu-latest
+    needs: get-pr-commit-data
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     steps:
       - name: Tests Step
-        run: echo "Tests step in Tests Job..."
+        run: echo "Tests step for ${{ needs.get-pr-commit-data.outputs.pr-sha }}"
   
   other-job:
     name: Tests Failure Job
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     needs: [get-pr-commit-data, tests-job]
     steps:
