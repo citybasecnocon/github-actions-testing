@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pr-sha: ${{ github.sha }}
-      pr-ref: ${{ steps.pr-comment-commit-data.outputs.head_ref }}
+      pr-ref: ${{ github.ref }}
     steps:
       - name: Get Comment Branch SHA
         uses: xt0rted/pull-request-comment-branch@v1
@@ -22,7 +22,7 @@ jobs:
         run: echo "Tests step for ${{ github.sha }}"
   
   other-job:
-    name: Tests Failure Job
+    name: Other Job
     runs-on: ubuntu-latest
     needs: [get-pr-commit-data, tests-job]
     steps:
