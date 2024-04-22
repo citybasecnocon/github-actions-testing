@@ -6,7 +6,7 @@ jobs:
     name: Get Latest PR Commit SHA
     runs-on: ubuntu-latest
     outputs:
-      pr-sha: ${{ steps.pr-comment-commit-data.outputs.head_sha }}
+      pr-sha: ${{ github.sha }}
       pr-ref: ${{ steps.pr-comment-commit-data.outputs.head_ref }}
     steps:
       - name: Get Comment Branch SHA
@@ -19,7 +19,7 @@ jobs:
     needs: get-pr-commit-data
     steps:
       - name: Tests Step
-        run: echo "Tests step for ${{ needs.get-pr-commit-data.outputs.pr-sha }}"
+        run: echo "Tests step for ${{ github.sha }}"
   
   other-job:
     name: Tests Failure Job
@@ -31,5 +31,5 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
+          sha: ${{ github.sha }}
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
