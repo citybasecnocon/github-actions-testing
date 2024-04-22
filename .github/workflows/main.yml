@@ -4,8 +4,18 @@ on:
     types: [created]
 
 jobs:
-  start:
-    name: "Test Job"
+  tests-job:
+    name: Tests Job
+    runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-    runs: echo "Testing..."
+    steps:
+      - name: Tests Step
+        run: echo "Tests step..."
+      
+      - name: Update Commit Status to Job Status
+        uses: myrotvorets/set-commit-status-action@master
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
