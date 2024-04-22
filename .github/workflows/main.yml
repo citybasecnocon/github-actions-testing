@@ -1,0 +1,11 @@
+name: "Run E2E Tests on Comment"
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  start:
+    name: "Test Job"
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    runs: echo "Testing..."
+
