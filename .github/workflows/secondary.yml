@@ -9,9 +9,8 @@ jobs:
       pr-sha: ${{ github.sha }}
       pr-ref: ${{ github.ref }}
     steps:
-      - name: Get Comment Branch SHA
-        uses: xt0rted/pull-request-comment-branch@v1
-        id: pr-comment-commit-data
+      - name: Run stuff
+        run: echo ${{ github.ref }}
 
   tests-job:
     name: Tests Job
