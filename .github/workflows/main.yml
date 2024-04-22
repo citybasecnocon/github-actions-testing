@@ -41,3 +41,17 @@ jobs:
       - name: create the status # create the status on the lastest commit sha from pull request
         run: |
           curl -X POST -u "citybasecnocon:${{ secrets.REPO_ACCESS_TOKEN }}" -H "Content-Type: application/json" "https://api.github.com/repos/${{ github.repository }}/statuses/$PRSHA" --data '{ "state": "failure", "target_url": "https://example.com/build/status", "description": "The build failed!", "context": "continuous-integration/statuscreation7"}'
+  
+  # other-job:
+  #   name: Other Job
+  #   if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+  #   runs-on: ubuntu-latest
+  #   needs: [get-pr-commit-data, tests-job]
+  #   steps:
+  #     - name: Update Commit Status to Job Status
+  #       uses: myrotvorets/set-commit-status-action@master
+  #       if: always()
+  #       with:
+  #         status: ${{ job.status }}
+  #         sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
+  #         token: ${{ secrets.REPO_ACCESS_TOKEN }}
