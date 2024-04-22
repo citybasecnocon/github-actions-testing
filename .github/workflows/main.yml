@@ -35,3 +35,4 @@ jobs:
         with:
           status: ${{ job.status }}
           sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
