@@ -23,7 +23,7 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     steps:
       - name: Tests Step
-        run: echo "Tests step for ${{ needs.get-pr-commit-data.outputs.pr-sha }}"
+        run: echo "MAIN.YML Tests step for ${{ needs.get-pr-commit-data.outputs.pr-sha }}"
   
   other-job:
     name: Other Job
