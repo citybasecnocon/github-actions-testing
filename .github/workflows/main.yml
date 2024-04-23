@@ -51,8 +51,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ github.head_ref }}
-        sha: ${{ github.sha }}
+        ref: ${{ github.event.pull_request.head.ref }}
+        sha: ${{ github.event.pull_request.head.sha }}
     - name: Run the action # You would run your tests before this using the output to set state/desc
       uses: Sibz/github-status-action@v1
       with: 
