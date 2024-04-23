@@ -4,36 +4,18 @@ on:
     types: [review_requested]
 
 jobs:
-  get-pr-commit-data:
-    name: Get Latest PR Commit SHA
+  test_something:
     if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
     runs-on: ubuntu-latest
     steps:
-      - name: Get Latest PR Commit SHA Step One
-        run: echo ''
-
-  tests-job: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    needs: get-pr-commit-data
-    steps:
-    - name: Run the action # You would run your tests before this using the output to set state/desc
-      uses: Sibz/github-status-action@v1
-      with: 
-        authToken: ${{ secrets.REPO_ACCESS_TOKEN }}
-        context: 'Test run'
-        description: 'Passed'
-        state: 'success'
-        sha: ${{ github.event.pull_request.head.sha }}
-  
-  # other-job:
-  #   name: Other Job
-  #   needs: tests-job
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Update Commit Status to Job Status
-  #       uses: myrotvorets/set-commit-status-action@master
-  #       if: always()
-  #       with:
-  #         status: "success"
-  #         sha: ${{ github.sha }}
-  #         token: ${{ secrets.REPO_ACCESS_TOKEN }}
+    - uses: actions/checkout@v1
+    - uses: actions/create-outputs@v0.0.0-fake
+      id: test
+    - uses: LouisBrunner/checks-action@v2.0.0
+      if: always()
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        name: Test XYZ
+        conclusion: ${{ job.status }}
+        output: |
+          {"summary":"${{ steps.test.outputs.summary }}"}
