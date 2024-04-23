@@ -5,7 +5,7 @@ on:
 jobs:
   test_something:
     name: Test Something
-    if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
+    if: github.event.requested_reviewer && contains(github.event.requested_reviewer, 'cnocon')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -19,3 +19,10 @@ jobs:
         conclusion: ${{ job.status }}
         output: |
           {"summary":"${{ steps.test.outputs.summary }}"}
+  
+  set-status:
+    needs: test_something
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo hello
+        run: echo 'Hello'
