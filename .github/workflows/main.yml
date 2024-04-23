@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Latest PR Commit SHA Step One
-        run: echo ''
+        run: echo 'Hello'
 
   tests-job: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
