@@ -64,7 +64,7 @@ jobs:
     if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
     steps:
       - name: Echo job status
-        run: echo 'Hello'
+        run: echo 'Hello there'
 
   other-job:
     name: Other Job
