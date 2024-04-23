@@ -6,7 +6,6 @@ on:
 jobs:
   get-pr-commit-data:
     name: Get Latest PR Commit SHA
-    if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
     runs-on: ubuntu-latest
     outputs:
       pr-sha: ${{ steps.pr-comment-commit-data.outputs.head_sha }}
@@ -15,7 +14,7 @@ jobs:
       - name: Get Comment Branch SHA
         uses: xt0rted/pull-request-comment-branch@v1
         id: pr-comment-commit-data
-      - run: echo '${{steps.pr-comment-commit-data.outputs.head_ref }}'
+  
   tests-job:
     name: Tests Job
     runs-on: ubuntu-latest
@@ -31,6 +30,11 @@ jobs:
           ref: ${{ needs.get-pr-commit-data.outputs.pr-ref }}
           sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
           node-version: '20'
+      - run: echo pull_request url - ${{ github.event.pull_request.url }}
+      - run: echo pull_request commits_url - ${{ github.event.pull_request.commits_url }}
+      - run: echo pull_request statuses_url - ${{ github.event.pull_request.statuses_url }}
+      - run: echo pull_request state - ${{ github.event.pull_request.state }}
+      - run: echo pull_request merge_commit_sha - ${{ github.event.pull_request.merge_commit_sha }}
   
   # other-job:
   #   name: Other Job
@@ -42,7 +46,7 @@ jobs:
   #       env:
   #         PRSHA: ${{ needs.get-pr-commit-data.outputs.pr-sha}} 
   #       run: |
-  #         URL=${{ github.event.issue.pull_request.url }}/commits
+  #         URL=${{ github.event.pull_request.url }}/commits
   #         echo "PRSHA=${{ needs.get-pr-commit-data.outputs.pr-sha }}"
   #     - name: echo PRSHA # check the lastest SHA
   #       env:
