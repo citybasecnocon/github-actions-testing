@@ -5,6 +5,7 @@ on:
 
 jobs:
   test_something:
+    if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
