@@ -60,7 +60,6 @@ jobs:
     - name: Try to fail
       run: exit 1
 
-
   # other-job:
   #   name: Other Job
   #   runs-on: ubuntu-latest
