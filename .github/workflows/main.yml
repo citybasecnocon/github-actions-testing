@@ -2,9 +2,9 @@ name: "Run Tests on Reviewer Requested"
 on:
   pull_request:
     types: [review_requested]
-
 jobs:
   test_something:
+    name: Test Something
     if: github.event.pull_request.requested_reviewers && contains(github.event.pull_request.requested_reviewers, 'cnocon')
     runs-on: ubuntu-latest
     steps:
