@@ -15,15 +15,26 @@ jobs:
       - name: Get Comment Branch SHA
         uses: xt0rted/pull-request-comment-branch@v1
         id: pr-comment-commit-data
-
+        
   tests-job:
     name: Tests Job
     runs-on: ubuntu-latest
     needs: get-pr-commit-data
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     steps:
-      - name: Tests Step
-        run: echo "MAIN.YML Tests step for ${{ needs.get-pr-commit-data.outputs.pr-sha }}"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.get-pr-commit-data.outputs.pr-ref }}
+          sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
+      - uses: actions/setup-node@v4
+        with:
+          ref: ${{ needs.get-pr-commit-data.outputs.pr-ref }}
+          sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
+          node-version: '20'
+      - run: npm init playwright@latest
+      - run: npx playwright install --with-deps
+      - run: npm install -D @playwright/test@latest
+      - run: echo 'npx playwright --version'
   
   other-job:
     name: Other Job
@@ -38,11 +49,19 @@ jobs:
           URL=${{ github.event.issue.pull_request.url }}/commits
           echo "PRSHA=${{ needs.get-pr-commit-data.outputs.pr-sha }}"
       - name: echo PRSHA # check the lastest SHA
+        env:
+          PRSHA: ${{ needs.get-pr-commit-data.outputs.pr-sha}} 
         run: |
           echo $PRSHA
       - name: create the status # create the status on the lastest commit sha from pull request
+        env:
+          PRSHA: ${{ needs.get-pr-commit-data.outputs.pr-sha}}
         run: |
-          curl -X POST -u "citybasecnocon:${{ secrets.REPO_ACCESS_TOKEN }}" -H "Content-Type: application/json" "https://api.github.com/repos/${{ github.repository }}/statuses/$PRSHA" --data '{ "state": ${{ job.status }}, "target_url": "https://example.com/build/status", "description": "The build failed!", "context": "continuous-integration/statuscreation7"}'
+          curl -X POST -u  \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.REPO_ACCESS_TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/citybasecnocon/github-actions-testing/commits/${{ needs.get-pr-commit-data.outputs.pr-sha }}/status
   
   # other-job:
   #   name: Other Job
