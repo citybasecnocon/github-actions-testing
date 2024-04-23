@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Get Latest PR Commit SHA Step One
         run: echo github.env - ${{ github.env }}
-  tests-job:
+  echo-job:
     name: Tests Job
     runs-on: ubuntu-latest
     needs: get-pr-commit-data
@@ -38,6 +38,18 @@ jobs:
       - name: echo pull_request merge_commit_sha
         run: echo pull_request merge_commit_sha - ${{ github.event.pull_request.merge_commit_sha }}
   
+  tests-job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run the action # You would run your tests before this using the output to set state/desc
+      uses: Sibz/github-status-action@v1
+      with: 
+        authToken: ${{ secrets.REPO_ACCESS_TOKEN }}
+        context: 'Test run'
+        description: 'Passed'
+        state: 'success'
+        sha: ${{ github.event.pull_request.head.sha }}
   other-job:
     name: Other Job
     runs-on: ubuntu-latest
