@@ -27,8 +27,8 @@ jobs:
           ref: ${{ github.ref }}
           sha: ${{ github.sha }}
           node-version: '20'
-      - name: run npm install
-        run: npm install
+      # - name: run npm install
+      #   run: npm install
       # - name: echo pull_request url
       #   run: echo pull_request url - ${{ github.event.pull_request.url }}
       # - name: echo pull_request commits_url
