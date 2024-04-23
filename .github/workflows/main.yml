@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Get Latest PR Commit SHA Step One
-        run: echo MAIN.YML github.head_ref - ${{ github.head_ref }}
+        run: echo 'HELLO'
 
   echo-job:
     name: Tests Job
