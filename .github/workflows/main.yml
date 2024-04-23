@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: Get Latest PR Commit SHA Step One
         run: echo MAIN.YML github.env - ${{ github.env }}
-  
   echo-job:
     name: Tests Job
     runs-on: ubuntu-latest
