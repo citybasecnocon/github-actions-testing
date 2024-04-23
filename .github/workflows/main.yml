@@ -19,3 +19,10 @@ jobs:
         conclusion: ${{ job.status }}
         output: |
           {"summary":"${{ steps.test.outputs.summary }}"}
+  
+  set-status:
+    needs: test_something
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo hello
+        run: echo 'Hello'
