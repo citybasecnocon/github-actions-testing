@@ -9,7 +9,7 @@ jobs:
       - name: Tests Step
         run: echo "Tests step for ${{ github.sha }}"
       - name: Failure Step
-        run: echo ${{ fake_var }}
+        run: echo ref - ${{ github.ref }}
   
   # other-job:
   #   name: Other Job
