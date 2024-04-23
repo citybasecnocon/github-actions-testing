@@ -31,9 +31,8 @@ jobs:
           ref: ${{ needs.get-pr-commit-data.outputs.pr-ref }}
           sha: ${{ needs.get-pr-commit-data.outputs.pr-sha }}
           node-version: '20'
-      - run: npm init playwright@latest
+      - run: npm install
       - run: npx playwright install --with-deps
-      - run: npm install -D @playwright/test@latest
       - run: echo 'npx playwright --version'
   
   other-job:
@@ -61,7 +60,9 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.REPO_ACCESS_TOKEN }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/citybasecnocon/github-actions-testing/commits/${{ needs.get-pr-commit-data.outputs.pr-sha }}/status
+          https://api.github.com/repos/citybasecnocon/github-actions-testing/statuses/${{ needs.get-pr-commit-data.outputs.pr-sha }} \
+          -d '{"state":${{ job.status }},"target_url":"https://api.github.com/repos/citybasecnocon/github-actions-testing/commits/${{ needs.get-pr-commit-data.outputs.pr-sha }}/status","description":"The build was a ${{ job.status }}!","context":${{ needs.get-pr-commit-data.outputs.pr-ref }}}'
+
   
   # other-job:
   #   name: Other Job
