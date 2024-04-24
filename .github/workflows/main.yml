@@ -1,4 +1,4 @@
-name: "Run Tests on Reviewer Requested"
+name: "Run Tests on Reviewer Requested 100"
 on:
   pull_request:
     types: [review_requested]
